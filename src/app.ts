@@ -16,6 +16,8 @@ import { env } from './env'
 
 import { logger } from './logger'
 
+import { usersRoutes } from './http/controllers/users/routes'
+
 export const app = fastify()
 
 app.register(fastifyCors, {
@@ -54,6 +56,8 @@ app.register(fastifySwaggerUi, {
 app.get('/healthcheck', async () => {
   return { status: 'ok' }
 })
+
+app.register(usersRoutes)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
