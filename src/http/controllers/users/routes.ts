@@ -22,7 +22,23 @@ export async function usersRoutes(app: FastifyInstance) {
       response: {
         201: {
           description: 'User registered successfully',
-          type: 'null',
+          type: 'object',
+          properties: {
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                firstName: { type: 'string' },
+                lastName: { type: 'string' },
+                bio: { type: 'string' },
+                username: { type: 'string' },
+                email: { type: 'string' },
+                emailIsVerified: { type: 'boolean' },
+                createdAt: { type: 'string', format: 'date-time' },
+                updatedAt: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
         },
         409: {
           description: 'Usename or email already exists',
