@@ -4,7 +4,7 @@ import { UsersInMemoryRepository } from '@/repositories/in-memory/users.in-memor
 
 import { VerifyAccountUseCase } from './verify-account'
 
-import { AccountAlreadyVerifiedError } from '../errors/account-already-verified'
+import { InvalidTokenError } from '../errors/invalid-token'
 
 let userRepository: UsersInMemoryRepository
 let sut: VerifyAccountUseCase
@@ -38,6 +38,6 @@ describe('Verify Account Use Case', () => {
       sut.execute({
         token: 'non-existing-token',
       }),
-    ).rejects.toBeInstanceOf(AccountAlreadyVerifiedError)
+    ).rejects.toBeInstanceOf(InvalidTokenError)
   })
 })
