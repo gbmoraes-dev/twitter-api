@@ -24,7 +24,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   try {
     const registerUseCase = makeRegisterUseCase()
 
-    const user = await registerUseCase.execute({
+    const { user } = await registerUseCase.execute({
       firstName,
       lastName,
       bio,
