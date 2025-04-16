@@ -17,9 +17,9 @@ export async function verifyAccount(
   const { token } = verifyAccountBodySchema.parse(request.body)
 
   try {
-    const registerUseCase = makeVerifyAccountUseCase()
+    const verifyAccountUseCase = makeVerifyAccountUseCase()
 
-    const { user } = await registerUseCase.execute({
+    const { user } = await verifyAccountUseCase.execute({
       token,
     })
 
