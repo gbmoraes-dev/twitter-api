@@ -34,7 +34,7 @@ export const users = pgTable(
     email: text('email').unique().notNull(),
     passwordHash: text('password_hash').notNull(),
     emailIsVerified: boolean('email_is_verified').default(false).notNull(),
-    emailVerificationToken: text('email_verification_token').notNull(),
+    emailVerificationToken: text('email_verification_token'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
