@@ -6,6 +6,8 @@ import { verifyAccount } from './verify-account.controller'
 
 import { authenticate } from './authenticate.controller'
 
+import { refresh } from './refresh.controller'
+
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', {
     schema: {
@@ -131,5 +133,22 @@ export async function usersRoutes(app: FastifyInstance) {
       },
     },
     handler: authenticate,
+  })
+
+  app.patch('/token/refresh', {
+    schema: {
+      summary: 'Refresh an account',
+      tags: ['Auth'],
+      response: {
+        200: {
+          description: 'User refreshed successfully',
+          type: 'object',
+          properties: {
+            token: { type: 'string' },
+          },
+        },
+      },
+    },
+    handler: refresh,
   })
 }
