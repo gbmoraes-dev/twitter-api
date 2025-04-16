@@ -11,6 +11,8 @@
     "build": "tsup src --out-dir build --format esm",
     "biome:check": "biome check --write .",
     "test": "vitest run --passWithNoTests",
+    "test:unit": "vitest run --passWithNoTests src/use-cases",
+    "test:e2e": "vitest run --passWithNoTests src/http",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "migrate:generate": "drizzle-kit generate",
