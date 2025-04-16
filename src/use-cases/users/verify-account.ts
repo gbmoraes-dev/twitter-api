@@ -2,7 +2,7 @@ import type { User } from '@/db/schemas'
 
 import type { UsersRepository } from '@/repositories/users.repository'
 
-import { AccountAlreadyVerifiedError } from '../errors/account-already-verified'
+import { InvalidTokenError } from '../errors/invalid-token'
 
 interface VerifyAccountUseCaseRequest {
   token: string
@@ -21,7 +21,7 @@ export class VerifyAccountUseCase {
     const user = await this.usersRepository.findByVerificationToken(token)
 
     if (!user) {
-      throw new AccountAlreadyVerifiedError()
+      throw new InvalidTokenError()
     }
 
     const verifiedUser = await this.usersRepository.update(user.id, {

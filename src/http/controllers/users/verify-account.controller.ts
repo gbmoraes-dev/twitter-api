@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import { makeVerifyAccountUseCase } from '@/use-cases/users/factories/make-verify-account'
 
-import { AccountAlreadyVerifiedError } from '@/use-cases/errors/account-already-verified'
+import { InvalidTokenError } from '@/use-cases/errors/invalid-token'
 
 export async function verifyAccount(
   request: FastifyRequest,
@@ -25,7 +25,7 @@ export async function verifyAccount(
 
     return reply.status(200).send({ user })
   } catch (error) {
-    if (error instanceof AccountAlreadyVerifiedError) {
+    if (error instanceof InvalidTokenError) {
       return reply.status(409).send({ message: error.message })
     }
 
