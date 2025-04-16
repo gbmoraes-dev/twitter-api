@@ -39,6 +39,15 @@ export class UsersDrizzleRepository implements UsersRepository {
     return user
   }
 
+  async findByVerificationToken(token: string): Promise<User | null> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.emailVerificationToken, token))
+
+    return user
+  }
+
   async search(query: string, page: number): Promise<PublicUser[]> {
     const result = await db
       .select({
@@ -63,7 +72,7 @@ export class UsersDrizzleRepository implements UsersRepository {
     return result
   }
 
-  async update(id: string, data: Partial<UserInsert>): Promise<User | null> {
+  async update(id: string, data: Partial<UserInsert>): Promise<User> {
     const [user] = await db
       .update(users)
       .set({
