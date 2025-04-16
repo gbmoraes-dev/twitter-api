@@ -10,6 +10,10 @@ import fastifySwagger from '@fastify/swagger'
 
 import fastifySwaggerUi from '@fastify/swagger-ui'
 
+import fastifyJwt from '@fastify/jwt'
+
+import fastifyCookie from '@fastify/cookie'
+
 import { ZodError } from 'zod'
 
 import { env } from './env'
@@ -52,6 +56,19 @@ app.register(fastifySwaggerUi, {
     },
   },
 })
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false,
+  },
+  sign: {
+    expiresIn: '10m',
+  },
+})
+
+app.register(fastifyCookie)
 
 app.get('/healthcheck', async () => {
   return { status: 'ok' }
