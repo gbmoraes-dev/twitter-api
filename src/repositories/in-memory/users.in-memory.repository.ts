@@ -39,6 +39,18 @@ export class UsersInMemoryRepository implements UsersRepository {
     return this.users.find((user) => user.username === username) ?? null
   }
 
+  async findByVerificationToken(token: string): Promise<User | null> {
+    const user = this.users.find(
+      (user) => user.emailVerificationToken === token,
+    )
+
+    if (user?.emailIsVerified) {
+      return null
+    }
+
+    return user ?? null
+  }
+
   async search(query: string, page: number): Promise<PublicUser[]> {
     const queryLower = query.toLowerCase()
 
@@ -59,12 +71,8 @@ export class UsersInMemoryRepository implements UsersRepository {
       }))
   }
 
-  async update(id: string, data: Partial<UserInsert>): Promise<User | null> {
+  async update(id: string, data: Partial<UserInsert>): Promise<User> {
     const index = this.users.findIndex((user) => user.id === id)
-
-    if (index === -1) {
-      return null
-    }
 
     const updatedUser: User = {
       ...this.users[index],
@@ -77,15 +85,9 @@ export class UsersInMemoryRepository implements UsersRepository {
     return updatedUser
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string): Promise<void> {
     const index = this.users.findIndex((user) => user.id === id)
 
-    if (index === -1) {
-      return false
-    }
-
     this.users.splice(index, 1)
-
-    return true
   }
 }
