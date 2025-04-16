@@ -10,6 +10,7 @@ const envSchema = z
       .enum(['development', 'production', 'test'])
       .default('development'),
     PORT: z.coerce.number().default(3333),
+    JWT_SECRET: z.string(),
     DB_USER: z.string(),
     DB_PASSWORD: z.string(),
     DB_PORT: z.coerce.number().default(5432),
