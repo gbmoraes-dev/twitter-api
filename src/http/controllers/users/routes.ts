@@ -4,6 +4,8 @@ import { register } from './register.controller'
 
 import { verifyAccount } from './verify-account.controller'
 
+import { authenticate } from './authenticate.controller'
+
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', {
     schema: {
@@ -90,5 +92,44 @@ export async function usersRoutes(app: FastifyInstance) {
       },
     },
     handler: verifyAccount,
+  })
+
+  app.post('/authenticate', {
+    schema: {
+      summary: 'Authenticate an account',
+      tags: ['Auth'],
+      body: {
+        type: 'object',
+        properties: {
+          username: { type: 'string', minLength: 3 },
+          password: { type: 'string', minLength: 6 },
+        },
+        required: ['username', 'password'],
+      },
+      response: {
+        200: {
+          description: 'User authenticated successfully',
+          type: 'object',
+          properties: {
+            token: { type: 'string' },
+          },
+        },
+        400: {
+          description: 'Invalid Credentials',
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+          },
+        },
+        403: {
+          description: 'Account not verified',
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+          },
+        },
+      },
+    },
+    handler: authenticate,
   })
 }
