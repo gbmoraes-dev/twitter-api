@@ -2,6 +2,8 @@ import type { FastifyInstance } from 'fastify'
 
 import { register } from './register.controller'
 
+import { verifyAccount } from './verify-account.controller'
+
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', {
     schema: {
@@ -50,5 +52,43 @@ export async function usersRoutes(app: FastifyInstance) {
       },
     },
     handler: register,
+  })
+
+  app.patch('/verify-account', {
+    schema: {
+      summary: 'Verify an account',
+      tags: ['Auth'],
+      body: {
+        type: 'object',
+        properties: {
+          token: { type: 'string' },
+        },
+        required: ['token'],
+      },
+      response: {
+        200: {
+          description: 'User verified successfully',
+          type: 'object',
+          properties: {
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                emailIsVerified: { type: 'boolean' },
+                updatedAt: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+        409: {
+          description: 'Account already verified',
+          type: 'object',
+          properties: {
+            message: { type: 'string' },
+          },
+        },
+      },
+    },
+    handler: verifyAccount,
   })
 }
