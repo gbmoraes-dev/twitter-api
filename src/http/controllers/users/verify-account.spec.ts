@@ -63,7 +63,7 @@ describe('Verify Account (e2e)', () => {
 
     expect(response.statusCode).toEqual(409)
     expect(response.body).toEqual({
-      message: 'Invalid token provided or account is alredy verified.',
+      message: 'Invalid token provided or account is already verified.',
     })
   })
 })
