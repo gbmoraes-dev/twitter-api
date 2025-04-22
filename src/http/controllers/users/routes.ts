@@ -8,6 +8,10 @@ import { authenticate } from './authenticate.controller'
 
 import { refresh } from './refresh.controller'
 
+import { profile } from './profile.controller'
+
+import { verifyJwt } from '@/http/middlewares/verify-jwt'
+
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', {
     schema: {
@@ -150,5 +154,36 @@ export async function usersRoutes(app: FastifyInstance) {
       },
     },
     handler: refresh,
+  })
+
+  app.get('/me', {
+    schema: {
+      summary: 'Get user profile',
+      tags: ['Auth'],
+      response: {
+        200: {
+          description: 'Get user profile successfully',
+          type: 'object',
+          properties: {
+            user: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                firstName: { type: 'string' },
+                lastName: { type: 'string' },
+                bio: { type: 'string' },
+                username: { type: 'string' },
+                email: { type: 'string' },
+                emailIsVerified: { type: 'boolean' },
+                createdAt: { type: 'string', format: 'date-time' },
+                updatedAt: { type: 'string', format: 'date-time' },
+              },
+            },
+          },
+        },
+      },
+    },
+    preHandler: [verifyJwt],
+    handler: profile,
   })
 }
